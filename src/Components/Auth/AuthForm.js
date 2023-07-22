@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import classes from "./AuthForm.module.css";
 import { Form, Button } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
@@ -80,6 +80,8 @@ const AuthForm = () => {
 
           if (data.registered) {
             navigate("/home");
+
+            localStorage.setItem("tokenId", data.idToken);
           }
           // authCtx.login(data.idToken);
 

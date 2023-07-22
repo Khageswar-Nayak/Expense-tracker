@@ -26,30 +26,23 @@
 
 .header li {
   margin: 0 1rem;
+  display: flex;
 }
 
-.header a {
+.link {
   text-decoration: none;
-  color: white;
+  color: blue;
   font-weight: bold;
+  margin-left: 5px;
 }
 
 .header button {
   font: inherit;
-  background-color: transparent;
+  background-color: rgb(133, 124, 92);
   border: 1px solid white;
   color: white;
   font-weight: bold;
   padding: 0.5rem 1.5rem;
   border-radius: 6px;
   cursor: pointer;
-}
-
-.header a:hover {
-  color: #c291e2;
-}
-
-.header button:hover {
-  background-color: #c291e2;
-  color: #38015c;
 }

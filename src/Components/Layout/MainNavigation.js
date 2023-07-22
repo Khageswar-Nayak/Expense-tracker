@@ -4,13 +4,16 @@ import classes from "./MainNavigation.module.css";
 const MainNavigation = () => {
   return (
     <header className={classes.header}>
-      <Link to="/">
-        <div className={classes.logo}>Welcome to Expense Tracker</div>
-      </Link>
+      <div className={classes.logo}>Welcome to Expense Tracker</div>
       <nav>
         <ul>
           <li>
-            <button>Logout</button>
+            <button>
+              your profile is incomplete.
+              <Link className={classes.link} to="/profile">
+                Complete now
+              </Link>
+            </button>
           </li>
         </ul>
       </nav>
