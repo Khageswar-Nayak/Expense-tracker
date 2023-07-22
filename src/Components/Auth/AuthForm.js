@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./AuthForm.module.css";
 import { Form, Button } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
-function FormFloatingCustom() {
+const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [sectionHeight, setSectionHeight] = useState("18rem");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -20,9 +22,6 @@ function FormFloatingCustom() {
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
 
     if (!email || !password) {
       toast.error("Input fields are mendatory to fill", {
@@ -80,17 +79,14 @@ function FormFloatingCustom() {
           }
 
           if (data.registered) {
-            toast.success("Logged In Successfully !", {
-              position: "top-right",
-              theme: "colored",
-              autoClose: 3000,
-            });
+            navigate("/home");
           }
           // authCtx.login(data.idToken);
 
           // history.replace("/profile");
         } else {
           const data = await res.json();
+
           let errorMessage = "Authentication failed!";
           if (data && data.error && data.error.message) {
             errorMessage = data.error.message;
@@ -107,6 +103,9 @@ function FormFloatingCustom() {
         });
       }
     }
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
   return (
@@ -169,6 +168,6 @@ function FormFloatingCustom() {
       <ToastContainer />
     </section>
   );
-}
+};
 
-export default FormFloatingCustom;
+export default AuthForm;
