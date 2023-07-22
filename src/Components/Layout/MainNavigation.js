@@ -3,6 +3,10 @@ import classes from "./MainNavigation.module.css";
 import { Button } from "react-bootstrap";
 
 const MainNavigation = () => {
+  const logoutHandler = () => {
+    localStorage.removeItem("email");
+    localStorage.removeItem("idToken");
+  };
   const verifyEmailHandler = async () => {
     try {
       const res = await fetch(
@@ -33,7 +37,7 @@ const MainNavigation = () => {
       <nav>
         <ul>
           <li>
-            <button>
+            <button style={{ backgroundColor: "#38015c" }}>
               your profile is incomplete.
               <Link className={classes.link} to="/profile">
                 Complete now
@@ -45,6 +49,11 @@ const MainNavigation = () => {
       <Button variant="warning" size="sm" onClick={verifyEmailHandler}>
         Verify Email
       </Button>
+      <Link to="/">
+        <Button variant="primary" size="sm" onClick={logoutHandler}>
+          Logout
+        </Button>
+      </Link>
     </header>
   );
 };
