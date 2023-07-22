@@ -1,0 +1,53 @@
+.auth {
+  margin: 7rem auto;
+  width: 95%;
+  /* height: 21rem; */
+  max-width: 25rem;
+  border-radius: 6px;
+
+  background-color: #c5c7c7;
+  box-shadow: 0 5px 10px black;
+  padding: 1rem;
+  text-align: center;
+  /* color: white; */
+}
+
+.auth h1 {
+  font-family: ui-rounded;
+  font-weight: bolder;
+}
+
+.auth input {
+  border: 2px solid #c5c7c7;
+  border-bottom-color: black;
+  background-color: #c5c7c7;
+}
+
+.auth input:focus {
+  outline: none;
+  box-shadow: none; /* Remove the blue outline on focus */
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: rgb(37, 217, 241);
+  background-color: #c5c7c7;
+
+  /* background-color: #c5c7c7; */
+}
+.auth button {
+  margin-top: 1rem;
+}
+
+.auth input:focus + label {
+  color: black;
+}
+
+.auth p {
+  margin-top: -7px;
+}
+
+.button {
+  border: 1px solid #c5c7c7;
+  background-color: #c5c7c7;
+  color: blue;
+}
