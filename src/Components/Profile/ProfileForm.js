@@ -15,7 +15,7 @@ const ProfileForm = () => {
           {
             method: "POST",
             body: JSON.stringify({
-              idToken: localStorage.getItem("tokenId"),
+              idToken: localStorage.getItem("idToken"),
             }),
             headers: {
               "Content-Type": "application/json",
@@ -52,7 +52,7 @@ const ProfileForm = () => {
         {
           method: "POST",
           body: JSON.stringify({
-            idToken: localStorage.getItem("tokenId"),
+            idToken: localStorage.getItem("idToken"),
             displayName: enteredFullName,
             photoUrl: enteredPhotoURL,
             returnSecureToken: true,

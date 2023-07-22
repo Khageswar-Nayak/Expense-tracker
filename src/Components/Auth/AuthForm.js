@@ -64,7 +64,7 @@ const AuthForm = () => {
 
         if (res.ok) {
           const data = await res.json();
-          console.log(data);
+          // console.log(data);
           if (!data.registered && !isLogin) {
             console.log("User has successfully signed up");
             setIsLogin(true);
@@ -81,7 +81,8 @@ const AuthForm = () => {
           if (data.registered) {
             navigate("/home");
 
-            localStorage.setItem("tokenId", data.idToken);
+            localStorage.setItem("idToken", data.idToken);
+            localStorage.setItem("email", data.email);
           }
           // authCtx.login(data.idToken);
 
