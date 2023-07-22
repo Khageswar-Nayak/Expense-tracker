@@ -1,10 +1,45 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import classes from "./ProfileForm.module.css";
 import { Button } from "react-bootstrap";
 
 const ProfileForm = () => {
   const fullnameInputRef = useRef("");
   const photoURLinputRef = useRef("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const getData = await fetch(
+          "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAv-i3A29jJ85w1whdaMysK5Irng-pR8Oc",
+
+          {
+            method: "POST",
+            body: JSON.stringify({
+              idToken: localStorage.getItem("tokenId"),
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        // console.log(getData);
+        if (!getData.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await getData.json();
+        // console.log(data.users[0].displayName);
+        fullnameInputRef.current.value = data.users[0].displayName;
+        photoURLinputRef.current.value = data.users[0].photoUrl;
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const updateHandler = async (event) => {
     event.preventDefault();
 
@@ -29,6 +64,7 @@ const ProfileForm = () => {
       );
 
       const data = await response.json();
+
       console.log(data);
     } catch (err) {
       console.log(err.message);
