@@ -3,11 +3,11 @@ import classes from "./AuthForm.module.css";
 import { Form, Button } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [sectionHeight, setSectionHeight] = useState("18rem");
+  const [sectionHeight, setSectionHeight] = useState("19rem");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -16,7 +16,7 @@ const AuthForm = () => {
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
     setSectionHeight((prevState) =>
-      prevState === "18rem" ? "21rem" : "18rem"
+      prevState === "19rem" ? "21rem" : "19rem"
     );
   };
 
@@ -69,7 +69,7 @@ const AuthForm = () => {
             console.log("User has successfully signed up");
             setIsLogin(true);
             setSectionHeight((prevState) =>
-              prevState === "21rem" ? "18rem" : "21rem"
+              prevState === "21rem" ? "19rem" : "21rem"
             );
             toast.success("You can Login now", {
               position: "top-right",
@@ -147,7 +147,12 @@ const AuthForm = () => {
             <label htmlFor="floatingConfirmPassword">Confirm Password</label>
           </Form.Floating>
         )}
-
+        {isLogin && (
+          <Link style={{ textDecoration: "none" }} to="/forgetpassword">
+            forget password ?
+          </Link>
+        )}
+        <br />
         <Button variant="info" onClick={submitHandler}>
           Submit
         </Button>

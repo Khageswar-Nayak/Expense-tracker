@@ -25,7 +25,7 @@ const MainNavigation = () => {
       );
 
       const data = await res.json(); // Parse JSON data from the response
-      console.log(data);
+      // console.log(data);
     } catch (err) {
       console.log(err.response);
     }
