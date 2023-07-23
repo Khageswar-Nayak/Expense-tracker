@@ -10,7 +10,7 @@ const MainNavigation = () => {
   const verifyEmailHandler = async () => {
     try {
       const res = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAv-i3A29jJ85w1whdaMysK5Irng-pR8Oc",
+        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCy4qHPIUIpvcVirbLTHyoqXjq5SoN-QcU",
         {
           method: "POST",
           body: JSON.stringify({
@@ -25,15 +25,15 @@ const MainNavigation = () => {
       );
 
       const data = await res.json(); // Parse JSON data from the response
-      // console.log(data);
+      console.log(data);
     } catch (err) {
-      console.log(err.response);
+      console.log(err.message);
     }
   };
 
   return (
     <header className={classes.header}>
-      <div className={classes.logo}>Welcome to Expense Tracker</div>
+      <div className={classes.logo}>Expense Tracker</div>
       <nav>
         <ul>
           <li>

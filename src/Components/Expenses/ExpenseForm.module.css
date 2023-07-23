@@ -1,0 +1,95 @@
+.container {
+  width: 100%;
+  max-width: 500px;
+  background: #38015c;
+  padding: 28px;
+  margin: 6rem auto;
+  border-radius: 10px;
+}
+
+.container button {
+  margin-left: 11rem;
+  margin-top: 1rem;
+  width: 7rem;
+  height: 2rem;
+  border: 1px solid;
+  border-radius: 10px;
+  font-weight: bolder;
+}
+.form-title {
+  font-size: 26px;
+  font-weight: 600;
+  font-family: serif;
+  text-align: center;
+  padding-bottom: 6px;
+  color: white;
+  text-shadow: 2px 2px 2px black;
+  border-bottom: solid 1px white;
+}
+
+.main-expense-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.expense-input-box:nth-child(2n) {
+  justify-content: end;
+}
+
+.expense-input-box {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+  padding-bottom: 15px;
+}
+
+.expense-input-box label {
+  width: 95%;
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: initial;
+  margin: 5px 0;
+}
+
+.expense-input-box input {
+  height: 40px;
+  width: 95%;
+  border-radius: 7px;
+  outline: none;
+  border: 1px solid grey;
+  padding: 0 10px;
+}
+.expense-input-box select {
+  height: 40px;
+  width: 95%;
+  border-radius: 7px;
+  outline: none;
+  border: 1px solid grey;
+  padding: 0 10px;
+}
+
+.form-submit-btn input {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: sans-serif;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  color: rgb(255 255 255);
+  background: rgb(155 99 219);
+}
+
+.form-submit-btn input:hover {
+  background: rgb(62, 16, 127);
+  color: rgb(255, 255, 255);
+}
+
+.submitItems {
+  color: aliceblue;
+}

@@ -1,0 +1,7 @@
+.container {
+  margin: -3rem auto;
+  max-width: 41rem;
+
+  box-shadow: 10px;
+  background-color: gray;
+}
