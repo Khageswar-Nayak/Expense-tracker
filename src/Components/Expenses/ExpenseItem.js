@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import classes from "./ExpenseItem.module.css";
 import ExpenseContext from "../Store/ExpenseContext";
 
-const ExpenseItem = () => {
+const ExpenseItem = (props) => {
   const expenseCtx = useContext(ExpenseContext);
   return (
     <TableContainer component={Paper} className={classes.container}>
@@ -45,12 +45,22 @@ const ExpenseItem = () => {
             >
               Amount
             </TableCell>
+            <TableCell
+              style={{
+                backgroundColor: "#38015c",
+                color: "white",
+                fontWeight: "bold",
+                width: "8rem",
+              }}
+            >
+              Edit / Delete
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {expenseCtx.expenses.map((row) => (
+          {expenseCtx.expenses.map((expense) => (
             <TableRow
-              key={row.id}
+              key={expense.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell
@@ -62,7 +72,7 @@ const ExpenseItem = () => {
                   fontWeight: "bold",
                 }}
               >
-                {row.title}
+                {expense.title}
               </TableCell>
               <TableCell
                 align="right"
@@ -72,7 +82,7 @@ const ExpenseItem = () => {
                   fontWeight: "bold",
                 }}
               >
-                {row.category}
+                {expense.category}
               </TableCell>
               <TableCell
                 align="right"
@@ -82,7 +92,28 @@ const ExpenseItem = () => {
                   fontWeight: "bold",
                 }}
               >
-                {row.amount}
+                {expense.amount}
+              </TableCell>
+              <TableCell
+                align="right"
+                style={{
+                  backgroundColor: "gray",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+              >
+                <button
+                  className={classes.buttonOne}
+                  onClick={() => props.onEdit(expense)}
+                >
+                  <i className="bi bi-pencil-square"></i>
+                </button>
+                <button
+                  className={classes.buttonTwo}
+                  onClick={() => expenseCtx.deleteExpense(expense)}
+                >
+                  <i className="bi bi-trash-fill"></i>
+                </button>
               </TableCell>
             </TableRow>
           ))}
@@ -103,6 +134,7 @@ const ExpenseItem = () => {
             >
               {expenseCtx.totalAmount}
             </TableCell>
+            <TableCell />
           </TableRow>
         </TableBody>
       </Table>

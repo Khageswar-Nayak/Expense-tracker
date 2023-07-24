@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import classes from "./ProfileForm.module.css";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const ProfileForm = () => {
   const fullnameInputRef = useRef("");
@@ -74,9 +75,11 @@ const ProfileForm = () => {
   return (
     <div className={classes.profile}>
       <p>Contact Details</p>
-      <Button variant="outline-danger" size="sm">
-        Cancel
-      </Button>
+      <Link to="/home">
+        <Button variant="outline-danger" size="sm">
+          Cancel
+        </Button>
+      </Link>
       <form className={classes.form}>
         <i className="bi bi-github"></i>
         <label>Full Name :</label>

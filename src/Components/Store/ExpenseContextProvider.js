@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import ExpenseContext from "./ExpenseContext";
+import { ToastContainer, toast } from "react-toastify";
 
 const ExpenseContextProvider = (props) => {
   const [expenses, setExpenses] = useState([]);
@@ -35,21 +36,101 @@ const ExpenseContextProvider = (props) => {
     fetchExpenseHandler();
   }, []);
 
-  const addExpenseHandler = (expense, name) => {
-    const updatEexpense = { ...expense, id: name };
-    console.log(expense);
-    setExpenses((prevExpense) => [...prevExpense, updatEexpense]);
-    setTotalAmount(totalAmount + Number(updatEexpense.amount));
+  const addExpenseHandler = async (expense, editingExpenseId) => {
+    // console.log(editingExpenseId);
+    try {
+      if (editingExpenseId) {
+        const putExpense = await fetch(
+          `https://expense-tracker-33e64-default-rtdb.firebaseio.com/expenses/${editingExpenseId}.json`,
+          {
+            method: "PUT",
+            body: JSON.stringify(expense),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (putExpense.ok) {
+          const data = await putExpense.json();
+          const updatedExpenses = expenses.map((item) =>
+            item.id === editingExpenseId
+              ? { ...expense, id: editingExpenseId }
+              : item
+          );
+          setExpenses(updatedExpenses);
+          let updateTotalAmount = 0;
+          updatedExpenses.map((expense) => {
+            updateTotalAmount += Number(expense.amount);
+          });
+          setTotalAmount(updateTotalAmount);
+          toast.success("Expense Edited Successfully", {
+            position: "top-right",
+            theme: "colored",
+            autoClose: 3000,
+          });
+        }
+      } else {
+        const postExpense = await fetch(
+          "https://expense-tracker-33e64-default-rtdb.firebaseio.com/expenses.json",
+          {
+            method: "POST",
+            body: JSON.stringify(expense),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (postExpense.ok) {
+          const data = await postExpense.json();
+          const updatEexpense = { ...expense, id: data.name };
+
+          setExpenses((prevExpense) => [...prevExpense, updatEexpense]);
+          setTotalAmount(totalAmount + Number(updatEexpense.amount));
+          toast.success("Expense added Successfully", {
+            position: "top-right",
+            theme: "colored",
+            autoClose: 3000,
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
-  console.log(expenses);
+  // console.log(expenses);
+
+  const deleteExpenseHandler = async (expense) => {
+    try {
+      const deleteExpense = await fetch(
+        `https://expense-tracker-33e64-default-rtdb.firebaseio.com/expenses/${expense.id}.json`,
+        {
+          method: "DELETE",
+        }
+      );
+      const updateExpense = expenses.filter(
+        (prevExpense) => prevExpense.id !== expense.id
+      );
+      setExpenses(updateExpense);
+      setTotalAmount(totalAmount - Number(expense.amount));
+      toast.success("Expense Deleted Successfully", {
+        position: "top-right",
+        theme: "colored",
+        autoClose: 3000,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const contextValue = {
     expenses: expenses,
     totalAmount: totalAmount,
     addExpenses: addExpenseHandler,
+    deleteExpense: deleteExpenseHandler,
   };
   return (
     <ExpenseContext.Provider value={contextValue}>
       {props.children}
+      <ToastContainer />
     </ExpenseContext.Provider>
   );
 };

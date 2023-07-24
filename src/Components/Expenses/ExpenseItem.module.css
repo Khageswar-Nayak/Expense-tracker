@@ -5,3 +5,16 @@
   box-shadow: 10px;
   background-color: gray;
 }
+
+.buttonOne {
+  background-color: #2870c0db;
+  color: white;
+  border: 1px solid white;
+}
+
+.buttonTwo {
+  background-color: red;
+  color: white;
+  margin-left: 8px;
+  border: 1px solid white;
+}
