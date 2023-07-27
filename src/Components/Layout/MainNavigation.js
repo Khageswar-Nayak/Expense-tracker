@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import classes from "./MainNavigation.module.css";
 import { Button } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 const MainNavigation = () => {
+  const idToken = useSelector((state) => state.auth.token);
   const logoutHandler = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("idToken");
@@ -14,7 +16,7 @@ const MainNavigation = () => {
         {
           method: "POST",
           body: JSON.stringify({
-            idToken: localStorage.getItem("idToken"),
+            idToken: idToken,
             requestType: "VERIFY_EMAIL",
           }),
           headers: {

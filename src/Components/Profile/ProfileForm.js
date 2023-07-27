@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from "react";
 import classes from "./ProfileForm.module.css";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ProfileForm = () => {
+  const idToken = useSelector((state) => state.token);
   const fullnameInputRef = useRef("");
   const photoURLinputRef = useRef("");
 
@@ -16,7 +18,7 @@ const ProfileForm = () => {
           {
             method: "POST",
             body: JSON.stringify({
-              idToken: localStorage.getItem("idToken"),
+              idToken: idToken,
             }),
             headers: {
               "Content-Type": "application/json",
@@ -53,7 +55,7 @@ const ProfileForm = () => {
         {
           method: "POST",
           body: JSON.stringify({
-            idToken: localStorage.getItem("idToken"),
+            idToken: idToken,
             displayName: enteredFullName,
             photoUrl: enteredPhotoURL,
             returnSecureToken: true,

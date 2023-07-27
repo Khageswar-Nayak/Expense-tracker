@@ -4,9 +4,15 @@ import { Form, Button } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../store/auth-slice";
 
 const AuthForm = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const dispatch = useDispatch();
+  const login = useSelector((state) => state.auth.isLoggedIn);
+  console.log(login);
+
+  // const [isLogin, setIsLogin] = useState(true);
   const [sectionHeight, setSectionHeight] = useState("19rem");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +20,7 @@ const AuthForm = () => {
   const navigate = useNavigate();
 
   const switchAuthModeHandler = () => {
-    setIsLogin((prevState) => !prevState);
+    dispatch(authActions.setLogin());
     setSectionHeight((prevState) =>
       prevState === "19rem" ? "21rem" : "19rem"
     );
@@ -30,7 +36,7 @@ const AuthForm = () => {
         autoClose: 3000,
       });
     } else if (
-      !isLogin &&
+      !login &&
       confirmPassword.length > 0 &&
       confirmPassword !== password
     ) {
@@ -41,7 +47,7 @@ const AuthForm = () => {
       });
     } else {
       let url;
-      if (isLogin) {
+      if (login) {
         url =
           "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCy4qHPIUIpvcVirbLTHyoqXjq5SoN-QcU";
       } else {
@@ -64,10 +70,11 @@ const AuthForm = () => {
 
         if (res.ok) {
           const data = await res.json();
-          // console.log(data);
-          if (!data.registered && !isLogin) {
+          console.log(data);
+          if (!data.registered && !login) {
             console.log("User has successfully signed up");
-            setIsLogin(true);
+            // dispatch(authActions.login(data));
+            dispatch(authActions.setLogin());
             setSectionHeight((prevState) =>
               prevState === "21rem" ? "19rem" : "21rem"
             );
@@ -81,8 +88,7 @@ const AuthForm = () => {
           if (data.registered) {
             navigate("/home");
 
-            localStorage.setItem("idToken", data.idToken);
-            localStorage.setItem("email", data.email);
+            dispatch(authActions.login(data));
           }
           // authCtx.login(data.idToken);
 
@@ -113,7 +119,7 @@ const AuthForm = () => {
 
   return (
     <section className={classes.auth} style={{ height: sectionHeight }}>
-      <h1>{isLogin ? "Login" : "Sign Up"}</h1>
+      <h1>{login ? "Login" : "Sign Up"}</h1>
 
       <Form>
         <Form.Floating>
@@ -136,7 +142,7 @@ const AuthForm = () => {
           />
           <label htmlFor="floatingPasswordCustom">Password</label>
         </Form.Floating>
-        {!isLogin && (
+        {!login && (
           <Form.Floating>
             <Form.Control
               id="floatingConfirmPassword"
@@ -147,7 +153,7 @@ const AuthForm = () => {
             <label htmlFor="floatingConfirmPassword">Confirm Password</label>
           </Form.Floating>
         )}
-        {isLogin && (
+        {login && (
           <Link style={{ textDecoration: "none" }} to="/forgetpassword">
             forget password ?
           </Link>
@@ -156,7 +162,7 @@ const AuthForm = () => {
         <Button variant="info" onClick={submitHandler}>
           Submit
         </Button>
-        {isLogin && (
+        {login && (
           <p>
             don't have an account ?{" "}
             <button className={classes.button} onClick={switchAuthModeHandler}>
@@ -164,7 +170,7 @@ const AuthForm = () => {
             </button>
           </p>
         )}
-        {!isLogin && (
+        {!login && (
           <p>
             have an account ?
             <button className={classes.button} onClick={switchAuthModeHandler}>

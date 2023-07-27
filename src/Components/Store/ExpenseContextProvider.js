@@ -1,10 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
 import ExpenseContext from "./ExpenseContext";
 import { ToastContainer, toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { expenseAction } from "../../store/expense-slice";
 
 const ExpenseContextProvider = (props) => {
-  const [expenses, setExpenses] = useState([]);
-  const [totalAmount, setTotalAmount] = useState(0);
+  // const [expenses, setExpenses] = useState([]);
+  // const [totalAmount, setTotalAmount] = useState(0);
+  const dispatch = useDispatch();
+  const expenses = useSelector((state) => state.expense.expenses);
+  const totalAmount = useSelector((state) => state.expense.totalAmount);
 
   const fetchExpenseHandler = useCallback(async () => {
     try {
@@ -24,9 +29,10 @@ const ExpenseContextProvider = (props) => {
           category: data[key].category,
         });
       }
-
-      setExpenses(loadedExpenses);
-      setTotalAmount(getToatalAmount);
+      console.log(data);
+      dispatch(expenseAction.setExpense(loadedExpenses, getToatalAmount));
+      // setExpenses(loadedExpenses);
+      // setTotalAmount(getToatalAmount);
     } catch (error) {
       console.log(error);
     }
@@ -57,12 +63,27 @@ const ExpenseContextProvider = (props) => {
               ? { ...expense, id: editingExpenseId }
               : item
           );
-          setExpenses(updatedExpenses);
-          let updateTotalAmount = 0;
-          updatedExpenses.map((expense) => {
-            updateTotalAmount += Number(expense.amount);
-          });
-          setTotalAmount(updateTotalAmount);
+          // setExpenses(updatedExpenses);
+          const updatedTotalAmount = expenses.map((item) =>
+            item.id === editingExpenseId
+              ? totalAmount - Number(item.amount)
+              : totalAmount
+          );
+          //   state.totalAmount -= Number(state.expenses[index].amount);
+          // state.totalAmount += Number(action.payload.amount);
+          // let updateTotalAmount = 0;
+          // updatedExpenses.map((expense) => {
+          //   updateTotalAmount += Number(expense.amount);
+          // });
+          // setTotalAmount(updateTotalAmount);
+          const updateActionTotalAmount =
+            updatedTotalAmount + updatedExpenses.amount;
+          dispatch(
+            expenseAction.updateExpense(
+              updatedExpenses,
+              updateActionTotalAmount
+            )
+          );
           toast.success("Expense Edited Successfully", {
             position: "top-right",
             theme: "colored",
@@ -83,9 +104,11 @@ const ExpenseContextProvider = (props) => {
         if (postExpense.ok) {
           const data = await postExpense.json();
           const updatEexpense = { ...expense, id: data.name };
+          // console.log(updatEexpense);
 
-          setExpenses((prevExpense) => [...prevExpense, updatEexpense]);
-          setTotalAmount(totalAmount + Number(updatEexpense.amount));
+          // setExpenses((prevExpense) => [...prevExpense, updatEexpense]);
+          // setTotalAmount(totalAmount + Number(updatEexpense.amount));
+          dispatch(expenseAction.addExpense(updatEexpense));
           toast.success("Expense added Successfully", {
             position: "top-right",
             theme: "colored",
@@ -110,8 +133,10 @@ const ExpenseContextProvider = (props) => {
       const updateExpense = expenses.filter(
         (prevExpense) => prevExpense.id !== expense.id
       );
-      setExpenses(updateExpense);
-      setTotalAmount(totalAmount - Number(expense.amount));
+      const updatedTotalAmount = totalAmount - Number(expense.amount);
+      // setExpenses(updateExpense);
+      // setTotalAmount(totalAmount - Number(expense.amount));
+      dispatch(expenseAction.deleteExpense(updateExpense, updatedTotalAmount));
       toast.success("Expense Deleted Successfully", {
         position: "top-right",
         theme: "colored",
@@ -122,8 +147,8 @@ const ExpenseContextProvider = (props) => {
     }
   };
   const contextValue = {
-    expenses: expenses,
-    totalAmount: totalAmount,
+    // expenses: expenses,
+    // totalAmount: totalAmount,
     addExpenses: addExpenseHandler,
     deleteExpense: deleteExpenseHandler,
   };
