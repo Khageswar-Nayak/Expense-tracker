@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 const MainNavigation = () => {
   const idToken = useSelector((state) => state.auth.token);
+  const totalAmount = useSelector((state) => state.expense.totalAmount);
   const logoutHandler = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("idToken");
@@ -56,6 +57,13 @@ const MainNavigation = () => {
           Logout
         </Button>
       </Link>
+      {totalAmount > 10000 ? (
+        <Button variant="primary" size="sm" style={{ backgroundColor: "blue" }}>
+          Active Premium
+        </Button>
+      ) : (
+        <></>
+      )}
     </header>
   );
 };

@@ -11,7 +11,8 @@ const Homepage = () => {
     setEditExpense(expense);
     setEditingExpenseId(expense.id);
   };
-  // console.log(editExpense);
+  console.log("editExpense", editExpense);
+  console.log("editingExpenseId", editingExpenseId);
   const removeEditExpenseHandler = () => {
     setEditExpense({});
     setEditingExpenseId(null);

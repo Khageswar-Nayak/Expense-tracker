@@ -1,14 +1,18 @@
 import classes from "./ExpenseForm.module.css";
-import ExpenseContext from "../Store/ExpenseContext";
-import React, { useState, useContext, useRef, useEffect } from "react";
-
+// import ExpenseContext from "../Store/ExpenseContext";
+import { ToastContainer, toast } from "react-toastify";
+import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { expenseAction } from "../../store/expense-slice";
 const ExpenseForm = (props) => {
+  const dispatch = useDispatch();
+  const expenses = useSelector((state) => state.expense.expenses);
   const [addExpense, setAddExpense] = useState(false);
   const titleInputRef = useRef("");
   const amountInputRef = useRef("");
   const categoryInputRef = useRef("");
 
-  const expenseCtx = useContext(ExpenseContext);
+  // const expenseCtx = useContext(ExpenseContext);
 
   useEffect(() => {
     if (props.editExpense) {
@@ -25,25 +29,75 @@ const ExpenseForm = (props) => {
     setAddExpense(false);
   };
 
-  const addExpenseHandler = (event) => {
+  const addExpenseHandler = async (event) => {
     event.preventDefault();
     const expense = {
       title: titleInputRef.current.value,
       amount: amountInputRef.current.value,
       category: categoryInputRef.current.value,
     };
+    try {
+      if (props.editingExpenseId) {
+        // expenseCtx.addExpenses(expense, props.editingExpenseId);
+        const putExpense = await fetch(
+          `https://expense-tracker-33e64-default-rtdb.firebaseio.com/expenses/${props.editingExpenseId}.json`,
+          {
+            method: "PUT",
+            body: JSON.stringify(expense),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (putExpense.ok) {
+          const data = await putExpense.json();
+          const updatedExpenses = expenses.map((item) =>
+            item.id === props.editingExpenseId
+              ? { ...expense, id: props.editingExpenseId }
+              : item
+          );
+          dispatch(expenseAction.updateExpense(updatedExpenses));
+          props.onRemove();
+          setAddExpense(false);
 
-    if (props.editingExpenseId) {
-      expenseCtx.addExpenses(expense, props.editingExpenseId);
-      props.onRemove();
-      setAddExpense(false);
-    } else {
-      expenseCtx.addExpenses(expense, null);
+          toast.success("Expense Edited Successfully", {
+            position: "top-right",
+            theme: "colored",
+            autoClose: 3000,
+          });
+        }
+      } else {
+        // expenseCtx.addExpenses(expense, null);
+
+        const postExpense = await fetch(
+          "https://expense-tracker-33e64-default-rtdb.firebaseio.com/expenses.json",
+          {
+            method: "POST",
+            body: JSON.stringify(expense),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (postExpense.ok) {
+          const data = await postExpense.json();
+          const updatEexpense = { ...expense, id: data.name };
+          // console.log(updatEexpense);
+          dispatch(expenseAction.addExpense(updatEexpense));
+          toast.success("Expense added Successfully", {
+            position: "top-right",
+            theme: "colored",
+            autoClose: 3000,
+          });
+        }
+      }
+
+      titleInputRef.current.value = "";
+      amountInputRef.current.value = "";
+      categoryInputRef.current.value = "Food";
+    } catch (error) {
+      console.log(error);
     }
-
-    titleInputRef.current.value = "";
-    amountInputRef.current.value = "";
-    categoryInputRef.current.value = "";
   };
 
   return (
@@ -93,6 +147,7 @@ const ExpenseForm = (props) => {
           <button onClick={() => setAddExpense(true)}>Add</button>
         )}
       </div>
+      <ToastContainer />
     </>
   );
 };

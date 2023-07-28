@@ -11,14 +11,12 @@ import ExpenseContextProvider from "./Components/Store/ExpenseContextProvider";
 function App() {
   return (
     <BrowserRouter>
-      <ExpenseContextProvider>
-        <Routes>
-          <Route path="/" element={<Authpage />} />
-          <Route path="/home" element={<Homepage />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/forgetpassword" element={<ForgetPassword />} />
-        </Routes>
-      </ExpenseContextProvider>
+      <Routes>
+        <Route path="/" element={<Authpage />} />
+        <Route path="/home" element={<Homepage />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/forgetpassword" element={<ForgetPassword />} />
+      </Routes>
     </BrowserRouter>
   );
 }
