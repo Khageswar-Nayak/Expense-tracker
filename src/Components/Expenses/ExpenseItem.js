@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Button from "react-bootstrap/Button";
 import classes from "./ExpenseItem.module.css";
 // import ExpenseContext from "../Store/ExpenseContext";
 import { useCallback } from "react";
@@ -16,10 +17,9 @@ import { ToastContainer, toast } from "react-toastify";
 
 const ExpenseItem = (props) => {
   const dispatch = useDispatch();
-  // const expenseCtx = useContext(ExpenseContext);
-
   const expenses = useSelector((state) => state.expense.expenses);
   const totalAmount = useSelector((state) => state.expense.totalAmount);
+  const theme = useSelector((state) => state.theme.showTheme);
   // console.log(expenseState);
 
   const fetchExpenseHandler = useCallback(async () => {
@@ -74,6 +74,40 @@ const ExpenseItem = (props) => {
       console.log(error);
     }
   };
+
+  const convertToCSV = (data) => {
+    const csvRows = [];
+    const headers = ["Title", "Category", "Amount"];
+    csvRows.push(headers.join(","));
+
+    for (const row of data) {
+      const values = headers.map((header) => {
+        const escaped = String(row[header.toLowerCase()]).replace(/"/g, '\\"');
+        return `"${escaped}"`;
+      });
+      csvRows.push(values.join(","));
+    }
+
+    return csvRows.join("\n");
+  };
+
+  const downloadCSV = (csvData) => {
+    const blob = new Blob([csvData], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.setAttribute("hidden", "");
+    a.setAttribute("href", url);
+    a.setAttribute("download", "expenses.csv");
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const downloadHandler = () => {
+    const csvData = convertToCSV(expenses);
+    downloadCSV(csvData);
+  };
+
   return (
     <>
       <TableContainer component={Paper} className={classes.container}>
@@ -216,7 +250,18 @@ const ExpenseItem = (props) => {
               >
                 {totalAmount}
               </TableCell>
-              <TableCell />
+              <TableCell>
+                {theme && (
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    style={{ float: "right" }}
+                    onClick={downloadHandler}
+                  >
+                    Download
+                  </Button>
+                )}
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>

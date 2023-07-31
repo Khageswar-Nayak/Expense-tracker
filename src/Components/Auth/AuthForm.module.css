@@ -51,3 +51,20 @@
   background-color: #c5c7c7;
   color: blue;
 }
+
+@media only screen and (max-width: 600px) {
+  /* Adjust margin for smaller screens */
+  .auth {
+    margin: 8rem auto;
+  }
+
+  /* Increase padding for smaller screens */
+  .auth {
+    padding: 1.5rem;
+  }
+
+  /* Adjust the font size of the h1 for smaller screens */
+  .auth h1 {
+    font-size: 24px;
+  }
+}

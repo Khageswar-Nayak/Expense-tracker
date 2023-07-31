@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10%;
+  padding: 0 2%;
 }
 
 .logo {
@@ -33,14 +33,14 @@
 
 .link {
   text-decoration: none;
-  color: blue;
+  color: rgba(234, 255, 0, 0.871);
   font-weight: bold;
   margin-left: 5px;
 }
 
 .header button {
   font: inherit;
-  background-color: rgb(133, 124, 92);
+  /* background-color: rgb(133, 124, 92); */
   border: 1px solid white;
   color: white;
   font-weight: bold;

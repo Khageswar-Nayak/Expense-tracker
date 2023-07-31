@@ -1,15 +1,35 @@
 import { Link } from "react-router-dom";
 import classes from "./MainNavigation.module.css";
 import { Button } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import DarkMode from "../DarkMode/DarkMode";
+import { themeAuction } from "../../store/theme-slice";
+import { useEffect, useState } from "react";
 
 const MainNavigation = () => {
+  const dispatch = useDispatch();
   const idToken = useSelector((state) => state.auth.token);
   const totalAmount = useSelector((state) => state.expense.totalAmount);
+  const expenses = useSelector((state) => state.expense.expenses);
+  const theme = useSelector((state) => state.theme);
+  const showPremium = localStorage.getItem("showPremium") || "";
+  const [premium, setPremium] = useState(showPremium);
+
   const logoutHandler = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("idToken");
   };
+
+  useEffect(() => {
+    if (
+      totalAmount > 10000 &&
+      localStorage.getItem("showPremium") !== "donotShow"
+    ) {
+      localStorage.setItem("showPremium", "show");
+      setPremium("show");
+    }
+  }, []);
+
   const verifyEmailHandler = async () => {
     try {
       const res = await fetch(
@@ -34,6 +54,15 @@ const MainNavigation = () => {
     }
   };
 
+  const premiumHandler = () => {
+    localStorage.setItem("showPremium", "donotShow");
+    dispatch(themeAuction.setTheme());
+    setPremium("donotShow");
+    alert(
+      "Now you can change the theme into dark and also you can download your list of expenses"
+    );
+  };
+
   return (
     <header className={classes.header}>
       <div className={classes.logo}>Expense Tracker</div>
@@ -49,21 +78,31 @@ const MainNavigation = () => {
           </li>
         </ul>
       </nav>
-      <Button variant="warning" size="sm" onClick={verifyEmailHandler}>
+      <Button
+        variant="warning"
+        size="sm"
+        onClick={verifyEmailHandler}
+        style={{ color: "black" }}
+      >
         Verify Email
       </Button>
+      {premium === "show" && (
+        <Button
+          variant="primary"
+          size="sm"
+          style={{ backgroundColor: "blue" }}
+          onClick={premiumHandler}
+        >
+          Active Premium
+        </Button>
+      )}
+      {theme && premium === "donotShow" && <DarkMode />}
+
       <Link to="/">
-        <Button variant="primary" size="sm" onClick={logoutHandler}>
+        <Button variant="danger" size="sm" onClick={logoutHandler}>
           Logout
         </Button>
       </Link>
-      {totalAmount > 10000 ? (
-        <Button variant="primary" size="sm" style={{ backgroundColor: "blue" }}>
-          Active Premium
-        </Button>
-      ) : (
-        <></>
-      )}
     </header>
   );
 };

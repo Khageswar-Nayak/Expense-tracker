@@ -1,5 +1,14 @@
+:root {
+  --body_background: white;
+}
+
+[data-theme="dark"] {
+  --body_background: #282c34;
+}
+
 * {
   box-sizing: border-box;
+  /* transition: all 0.3s ease-in-out; */
 }
 
 html {
@@ -8,5 +17,6 @@ html {
 
 body {
   margin: 0;
+  background-color: var(--body_background) !important;
 }
 /* @import "~bootstrap-icons/font/bootstrap-icons.css"; */
