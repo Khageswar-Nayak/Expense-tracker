@@ -20,12 +20,14 @@ const ExpenseItem = (props) => {
   const expenses = useSelector((state) => state.expense.expenses);
   const totalAmount = useSelector((state) => state.expense.totalAmount);
   const theme = useSelector((state) => state.theme.showTheme);
-  // console.log(expenseState);
+  const email = useSelector((state) => state.auth.email);
+  console.log(email);
+  const modifiedEmail = email.replace("@", "").replace(".", "");
 
   const fetchExpenseHandler = useCallback(async () => {
     try {
       const getExpense = await fetch(
-        "https://expense-tracker-33e64-default-rtdb.firebaseio.com/expenses.json"
+        `https://expense-tracker-33e64-default-rtdb.firebaseio.com/${modifiedEmail}.json`
       );
 
       const data = await getExpense.json();
@@ -56,7 +58,7 @@ const ExpenseItem = (props) => {
   const expenseDeleteHandler = async (expense) => {
     try {
       const deleteExpense = await fetch(
-        `https://expense-tracker-33e64-default-rtdb.firebaseio.com/expenses/${expense.id}.json`,
+        `https://expense-tracker-33e64-default-rtdb.firebaseio.com/${modifiedEmail}/${expense.id}.json`,
         {
           method: "DELETE",
         }

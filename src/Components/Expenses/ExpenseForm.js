@@ -7,6 +7,9 @@ import { expenseAction } from "../../store/expense-slice";
 const ExpenseForm = (props) => {
   const dispatch = useDispatch();
   const expenses = useSelector((state) => state.expense.expenses);
+  const email = useSelector((state) => state.auth.email);
+  const modifiedEmail = email.replace("@", "").replace(".", "");
+
   const [addExpense, setAddExpense] = useState(false);
   const titleInputRef = useRef("");
   const amountInputRef = useRef("");
@@ -40,7 +43,7 @@ const ExpenseForm = (props) => {
       if (props.editingExpenseId) {
         // expenseCtx.addExpenses(expense, props.editingExpenseId);
         const putExpense = await fetch(
-          `https://expense-tracker-33e64-default-rtdb.firebaseio.com/expenses/${props.editingExpenseId}.json`,
+          `https://expense-tracker-33e64-default-rtdb.firebaseio.com/${modifiedEmail}/${props.editingExpenseId}.json`,
           {
             method: "PUT",
             body: JSON.stringify(expense),
@@ -58,7 +61,6 @@ const ExpenseForm = (props) => {
           );
           dispatch(expenseAction.updateExpense(updatedExpenses));
           props.onRemove();
-          setAddExpense(false);
 
           toast.success("Expense Edited Successfully", {
             position: "top-right",
@@ -70,7 +72,7 @@ const ExpenseForm = (props) => {
         // expenseCtx.addExpenses(expense, null);
 
         const postExpense = await fetch(
-          "https://expense-tracker-33e64-default-rtdb.firebaseio.com/expenses.json",
+          `https://expense-tracker-33e64-default-rtdb.firebaseio.com/${modifiedEmail}.json`,
           {
             method: "POST",
             body: JSON.stringify(expense),
@@ -95,6 +97,7 @@ const ExpenseForm = (props) => {
       titleInputRef.current.value = "";
       amountInputRef.current.value = "";
       categoryInputRef.current.value = "Food";
+      setAddExpense(false);
     } catch (error) {
       console.log(error);
     }
