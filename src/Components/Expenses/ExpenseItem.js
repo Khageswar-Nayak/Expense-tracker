@@ -21,9 +21,9 @@ const ExpenseItem = (props) => {
   const totalAmount = useSelector((state) => state.expense.totalAmount);
   const theme = useSelector((state) => state.theme.showTheme);
   const email = useSelector((state) => state.auth.email);
-  console.log(email);
-  const modifiedEmail = email.replace("@", "").replace(".", "");
 
+  const modifiedEmail = email.replace("@", "").replace(".", "");
+  console.log(modifiedEmail);
   const fetchExpenseHandler = useCallback(async () => {
     try {
       const getExpense = await fetch(
