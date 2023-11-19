@@ -23,14 +23,15 @@ const ExpenseItem = (props) => {
   const email = useSelector((state) => state.auth.email);
 
   const modifiedEmail = email.replace("@", "").replace(".", "");
-  console.log(modifiedEmail);
+  console.log(expenses);
   const fetchExpenseHandler = useCallback(async () => {
     try {
       const getExpense = await fetch(
-        `https://expense-tracker-33e64-default-rtdb.firebaseio.com/${modifiedEmail}.json`
+        `https://expense-tracker-2f62c-default-rtdb.firebaseio.com/${modifiedEmail}.json`
       );
 
       const data = await getExpense.json();
+      console.log("data", data);
       let getToatalAmount = 0;
       const loadedExpenses = [];
       for (const key in data) {
@@ -58,7 +59,7 @@ const ExpenseItem = (props) => {
   const expenseDeleteHandler = async (expense) => {
     try {
       const deleteExpense = await fetch(
-        `https://expense-tracker-33e64-default-rtdb.firebaseio.com/${modifiedEmail}/${expense.id}.json`,
+        `https://expense-tracker-2f62c-default-rtdb.firebaseio.com/${modifiedEmail}/${expense.id}.json`,
         {
           method: "DELETE",
         }

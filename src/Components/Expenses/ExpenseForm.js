@@ -43,7 +43,7 @@ const ExpenseForm = (props) => {
       if (props.editingExpenseId) {
         // expenseCtx.addExpenses(expense, props.editingExpenseId);
         const putExpense = await fetch(
-          `https://expense-tracker-33e64-default-rtdb.firebaseio.com/${modifiedEmail}/${props.editingExpenseId}.json`,
+          `https://expense-tracker-2f62c-default-rtdb.firebaseio.com/${modifiedEmail}/${props.editingExpenseId}.json`,
           {
             method: "PUT",
             body: JSON.stringify(expense),
@@ -72,7 +72,7 @@ const ExpenseForm = (props) => {
         // expenseCtx.addExpenses(expense, null);
 
         const postExpense = await fetch(
-          `https://expense-tracker-33e64-default-rtdb.firebaseio.com/${modifiedEmail}.json`,
+          `https://expense-tracker-2f62c-default-rtdb.firebaseio.com/${modifiedEmail}.json`,
           {
             method: "POST",
             body: JSON.stringify(expense),
