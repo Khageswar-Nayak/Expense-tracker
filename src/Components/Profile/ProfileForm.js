@@ -13,7 +13,7 @@ const ProfileForm = () => {
     const fetchData = async () => {
       try {
         const getData = await fetch(
-          "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyCJwQyRCPiouAcnCnNuwXqWnbEMsRTlulQ",
+          "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBd2L_QXjc-lgtgomZ1SHWDHKWj59QYE6o",
 
           {
             method: "POST",
@@ -51,7 +51,7 @@ const ProfileForm = () => {
 
     try {
       const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCJwQyRCPiouAcnCnNuwXqWnbEMsRTlulQ",
+        "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBd2L_QXjc-lgtgomZ1SHWDHKWj59QYE6o",
         {
           method: "POST",
           body: JSON.stringify({
