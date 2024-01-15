@@ -27,7 +27,7 @@ const ExpenseItem = (props) => {
   const fetchExpenseHandler = useCallback(async () => {
     try {
       const getExpense = await fetch(
-        `https://expense-tracker-b8752-default-rtdb.firebaseio.com/${modifiedEmail}.json`
+        `https://expense-tracker-5bbef-default-rtdb.firebaseio.com/${modifiedEmail}.json`
       );
 
       const data = await getExpense.json();
@@ -59,7 +59,7 @@ const ExpenseItem = (props) => {
   const expenseDeleteHandler = async (expense) => {
     try {
       const deleteExpense = await fetch(
-        `https://expense-tracker-b8752-default-rtdb.firebaseio.com/${modifiedEmail}/${expense.id}.json`,
+        `https://expense-tracker-5bbef-default-rtdb.firebaseio.com/${modifiedEmail}/${expense.id}.json`,
         {
           method: "DELETE",
         }

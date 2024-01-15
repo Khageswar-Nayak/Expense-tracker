@@ -16,6 +16,7 @@ const ExpenseForm = (props) => {
   const categoryInputRef = useRef("");
 
   // const expenseCtx = useContext(ExpenseContext);
+  console.log("props.editingExpenseId", props.editingExpenseId);
 
   useEffect(() => {
     if (props.editExpense) {
@@ -41,9 +42,8 @@ const ExpenseForm = (props) => {
     };
     try {
       if (props.editingExpenseId) {
-        // expenseCtx.addExpenses(expense, props.editingExpenseId);
         const putExpense = await fetch(
-          `https://expense-tracker-b8752-default-rtdb.firebaseio.com/${modifiedEmail}/${props.editingExpenseId}.json`,
+          `https://expense-tracker-5bbef-default-rtdb.firebaseio.com/${modifiedEmail}/${props.editingExpenseId}.json`,
           {
             method: "PUT",
             body: JSON.stringify(expense),
@@ -72,7 +72,7 @@ const ExpenseForm = (props) => {
         // expenseCtx.addExpenses(expense, null);
 
         const postExpense = await fetch(
-          `https://expense-tracker-b8752-default-rtdb.firebaseio.com/${modifiedEmail}.json`,
+          `https://expense-tracker-5bbef-default-rtdb.firebaseio.com/${modifiedEmail}.json`,
           {
             method: "POST",
             body: JSON.stringify(expense),

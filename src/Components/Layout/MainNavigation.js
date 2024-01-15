@@ -33,7 +33,7 @@ const MainNavigation = () => {
   const verifyEmailHandler = async () => {
     try {
       const res = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBd2L_QXjc-lgtgomZ1SHWDHKWj59QYE6o",
+        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCBQiCiD7VDuM-neK1Kj4vs9C3NMeUL8js",
         {
           method: "POST",
           body: JSON.stringify({
